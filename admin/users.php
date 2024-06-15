@@ -1,4 +1,9 @@
-<?php include "header.php"; ?>
+<?php include "header.php"; 
+include 'config.php';
+
+$sql = "SELECT * FROM user";
+$result = mysqli_query($conn,$sql) or die("Query Failed");
+?>
   <div id="admin-content">
       <div class="container">
           <div class="row">
@@ -19,38 +24,25 @@
                           <th>Delete</th>
                       </thead>
                       <tbody>
+                        <?php 
+                      if(mysqli_num_rows($result)>0){
+                        while($row = mysqli_fetch_assoc($result)){
+                    ?>
                           <tr>
-                              <td class='id'>1</td>
-                              <td>Ram Sharma</td>
-                              <td>ram</td>
-                              <td>admin</td>
+                              <td class='id'><?php echo $row['user_id'] ?></td>
+                              <td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
+                              <td><?php echo $row['username'] ?></td>
+                              <td><?php echo $row['role'] ? "Admin":"Normal User" ?></td>
                               <td class='edit'><a href='update-user.php'><i class='fa fa-edit'></i></a></td>
                               <td class='delete'><a href='delete-user.php'><i class='fa fa-trash-o'></i></a></td>
                           </tr>
-                          <tr>
-                              <td class='id'>2</td>
-                              <td>Shyam Kumar</td>
-                              <td>shyam</td>
-                              <td>normal</td>
-                              <td class='edit'><a href='update-user.php'><i class='fa fa-edit'></i></a></td>
-                              <td class='delete'><a href='delete-user.php'><i class='fa fa-trash-o'></i></a></td>
-                          </tr>
-                          <tr>
-                              <td class='id'>3</td>
-                              <td>Ramesh Kumar</td>
-                              <td>ramesh</td>
-                              <td>admin</td>
-                              <td class='edit'><a href='update-user.php'><i class='fa fa-edit'></i></a></td>
-                              <td class='delete'><a href='delete-user.php'><i class='fa fa-trash-o'></i></a></td>
-                          </tr>
-                          <tr>
-                              <td class='id'>4</td>
-                              <td>Satish Sharma</td>
-                              <td>satish</td>
-                              <td>admin</td>
-                              <td class='edit'><a href='update-user.php'><i class='fa fa-edit'></i></a></td>
-                              <td class='delete'><a href='delete-user.php'><i class='fa fa-trash-o'></i></a></td>
-                          </tr>
+                          
+                       <?php 
+                        }
+                    }else{
+                        echo "No record found";
+                    }
+                       ?>
                       </tbody>
                   </table>
                   <ul class='pagination admin-pagination'>

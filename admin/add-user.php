@@ -1,4 +1,29 @@
-<?php include "header.php"; ?>
+<?php include "header.php"; 
+include 'config.php';
+if(isset($_POST['save'])){
+
+    $fname = mysqli_real_escape_string($conn,$_POST['fname']);
+    $lname = mysqli_real_escape_string($conn,$_POST['lname']);
+    $user = mysqli_real_escape_string($conn,$_POST['user']);
+    $password = mysqli_real_escape_string($conn,md5($_POST['password']));
+    $role = mysqli_real_escape_string($conn,$_POST['role']);
+    
+    $sql= "SELECT * FROM user WHERE username = '{$user}'";
+    $result = mysqli_query($conn,$sql);
+    if(mysqli_num_rows($result)>0){
+        echo "User name is alreday exist";
+    }else{
+        $sql1 = "INSERT INTO user (first_name,last_name,username,password,role) VALUES('{$fname}','{$lname}','{$user}','{$password}','{$role}')";
+        if(mysqli_query($conn,$sql1)){
+            header("Location: http://localhost/news_cms/admin/users.php");
+        }else{
+            echo "User not created";
+        }
+    }
+
+}
+
+?>
   <div id="admin-content">
       <div class="container">
           <div class="row">
