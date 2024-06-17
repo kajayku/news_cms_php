@@ -1,3 +1,14 @@
+<?php 
+session_start();
+if(!isset($_SESSION['user_id'])){
+    header("Location: ./");
+}
+
+// if($_SESSION['role']==0){
+//     header("Location: ./");
+// }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -43,12 +54,21 @@
                             <li>
                                 <a href="post.php">Post</a>
                             </li>
+                            <?php
+                            if($_SESSION['role']==1){
+                                ?>
+
                             <li>
                                 <a href="category.php">Category</a>
                             </li>
                             <li>
                                 <a href="users.php">Users</a>
                             </li>
+
+                            <?php
+                            }
+                            ?>
+                           
                         </ul>
                     </div>
                 </div>

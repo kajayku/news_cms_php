@@ -1,3 +1,14 @@
+<?php 
+session_start();
+
+// if(isset($_SESSION['user_id'])){
+//   header("Location: ./post.php");
+// }else{
+//     header("Location: ./");
+// }
+
+?>
+
 <!doctype html>
 <html>
    <head>
@@ -17,6 +28,32 @@
                     <div class="col-md-offset-4 col-md-4">
                         <img class="logo" src="images/news.jpg">
                         <h3 class="heading">Admin</h3>
+                        <?php 
+                        include 'config.php';
+
+                        if(isset($_POST['login'])){
+                            $username = mysqli_real_escape_string($conn,$_POST['username']);
+                            $password = mysqli_real_escape_string($conn, md5($_POST['password']));
+
+                            $sql = "SELECT * FROM user WHERE username = '{$username}' AND password = '{$password}'";
+                            $result = mysqli_query($conn,$sql) or die('Query Failed');
+                            if(mysqli_num_rows($result)>0){
+                                while($row = mysqli_fetch_assoc($result)){
+                                    session_start();
+                                    $_SESSION['user_id'] = $row['user_id'];
+                                    $_SESSION['username'] = $row['username'];
+                                    $_SESSION['first_name'] = $row['first_name'];
+                                    $_SESSION['last_name'] = $row['last_name'];
+                                    $_SESSION['role'] = $row['role'];
+                                }
+
+                                header("Location: ./post.php");
+                            }else{
+                                echo "Some things went wrong";
+                            }
+                        }
+                        
+                        ?>
                         <!-- Form Start -->
                         <form  action="" method ="POST">
                             <div class="form-group">
