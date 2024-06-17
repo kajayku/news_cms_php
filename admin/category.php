@@ -18,55 +18,64 @@
                         <th>Delete</th>
                     </thead>
                     <tbody>
+                        <?php 
+                        include 'config.php';
+                        if(isset($_GET['page'])){
+                            $page = $_GET['page'];
+                        }else{
+                            $page = 1; 
+                        }
+                        $limit = 3;
+                        $offset = ($page -1)*$limit;
+                        $sql = "SELECT * FROM category ORDER BY category_id DESC LIMIT {$offset},{$limit}";
+                        $result = mysqli_query($conn,$sql) or die("Query Failed");
+                        if(mysqli_num_rows($result)>0){
+                            while($row = mysqli_fetch_assoc($result)){
+                        
+                        ?>
                         <tr>
-                            <td class='id'>1</td>
-                            <td>Html</td>
-                            <td>5</td>
-                            <td class='edit'><a href='update-category.php'><i class='fa fa-edit'></i></a></td>
-                            <td class='delete'><a href='delete-category.php'><i class='fa fa-trash-o'></i></a></td>
+                            <td class='id'><?php echo $row['category_id'] ?></td>
+                            <td><?php echo $row['category_name'] ?></td>
+                            <td><?php echo $row['post'] ?></td>
+                            <td class='edit'><a href='update-category.php?category_id=<?php echo base64_encode($row['category_id'])  ?>'><i class='fa fa-edit'></i></a></td>
+                            <td class='delete'><a href='delete-category.php?category_id=<?php echo base64_encode($row['category_id']) ?>'><i class='fa fa-trash-o'></i></a></td>
                         </tr>
-                        <tr>
-                            <td class='id'>2</td>
-                            <td>Css</td>
-                            <td>15</td>
-                            <td class='edit'><a href='update-category.php'><i class='fa fa-edit'></i></a></td>
-                            <td class='delete'><a href='delete-category.php'><i class='fa fa-trash-o'></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class='id'>3</td>
-                            <td>Java</td>
-                            <td>8</td>
-                            <td class='edit'><a href='update-category.php'><i class='fa fa-edit'></i></a></td>
-                            <td class='delete'><a href='delete-category.php'><i class='fa fa-trash-o'></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class='id'>4</td>
-                            <td>Php</td>
-                            <td>11</td>
-                            <td class='edit'><a href='update-category.php'><i class='fa fa-edit'></i></a></td>
-                            <td class='delete'><a href='delete-category.php'><i class='fa fa-trash-o'></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class='id'>5</td>
-                            <td>Python</td>
-                            <td>13</td>
-                            <td class='edit'><a href='update-category.php'><i class='fa fa-edit'></i></a></td>
-                            <td class='delete'><a href='delete-category.php'><i class='fa fa-trash-o'></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class='id'>6</td>
-                            <td>Scss</td>
-                            <td>3</td>
-                            <td class='edit'><a href='update-category.php'><i class='fa fa-edit'></i></a></td>
-                            <td class='delete'><a href='delete-category.php'><i class='fa fa-trash-o'></i></a></td>
-                        </tr>
+                       <?php 
+                           }
+                        }
+                       ?> 
                     </tbody>
                 </table>
-                <ul class='pagination admin-pagination'>
-                    <li class="active"><a>1</a></li>
-                    <li><a>2</a></li>
-                    <li><a>3</a></li>
-                </ul>
+
+                <?php
+                $sql1 = "SELECT * FROM category";
+                $result1 = mysqli_query($conn,$sql1) or die("Query Failed");
+                if(mysqli_num_rows($result1)>0){
+                    $total_record = mysqli_num_rows($result1);
+                    $total_pages = ceil($total_record / $limit);
+
+                    echo '<ul class="pagination admin-pagination">';
+
+                  if($page > 1){
+                    echo '<li><a href = "category.php?page = '.($page-1).'">Prev</a></li>';
+                  }
+
+                    for($i=1; $i <=$total_pages; $i++){
+                        if($page == $i){
+                            $active = "active";
+                        }else{
+                            $active = "";
+                        }
+                        echo '<li class = "'.$active.'"><a href = "category.php?page='.$i.'">'.$i.'</a></li>';
+                    }
+                  if($total_pages > $page){
+                    echo '<li><a href = "category.php?page='.($page+1).'">Next</a></li>';
+                  }
+                    echo "</ul>";
+                }
+                ?>
+                
+             
             </div>
         </div>
     </div>
