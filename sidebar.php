@@ -18,7 +18,7 @@
 
         <?php
         
-        include 'config.php';
+        include 'config.php';  
         $limit = 5;
         $sql = "SELECT post.post_id,post.title,post.description,post.category,post.post_date,post.author,post.post_img,category.category_name,user.username
                 FROM post
