@@ -34,11 +34,27 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                
                 <ul class='menu'>
-                    <li><a href='category.php'>Business</a></li>
-                    <li><a href='category.php'>Entertainment</a></li>
-                    <li><a href='category.php'>Sports</a></li>
-                    <li><a href='category.php'>Politics</a></li>
+                <?php 
+                include 'config.php';
+                $cid = $_GET['category_id'];
+                $sql = "SELECT * FROM category WHERE post > 0";
+                $result = mysqli_query($conn,$sql) or die("Query Failed");
+                echo  "<li><a href='index.php'>Home</a></li>";
+                if(mysqli_num_rows($result)>0){
+                    while($row = mysqli_fetch_assoc($result)){
+                        if($cid == $row['category_id']){
+                            $active = "active";
+                        }else{
+                            $active = "";
+                        }
+               
+                   echo  "<li ><a class= '{$active}' href='category.php?category_id={$row['category_id']}'> {$row['category_name']}</a></li>";
+                    
+                }
+            }
+                ?>
                 </ul>
             </div>
         </div>
