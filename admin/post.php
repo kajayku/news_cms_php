@@ -22,7 +22,7 @@
                       <tbody>
                     <?php 
                     include 'config.php';
-
+                    
                     if(isset($_GET['page'])){
                         $page = $_GET['page'];
                     }else{
@@ -49,10 +49,11 @@
 
                     $result = mysqli_query($conn,$sql) or die("Query Failed");
                     if(mysqli_num_rows($result)>0){
+                        $srno = 1;
                         while($row = mysqli_fetch_assoc($result)){
                     ?>
                           <tr>
-                              <td class='id'><?php echo $row['post_id'] ?></td>
+                              <td class='id'><?php echo ($srno+$offset) ?></td>
                               <td><?php echo $row['title'] ?></td>
                               <td><?php echo $row['category_name'] ?></td>
                               <td><?php echo $row['post_date'] ?></td>
@@ -61,6 +62,8 @@
                               <td class='delete'><a href='delete-post.php?post_id=<?php echo $row['post_id'] ?>&category_id=<?php echo $row['category'] ?>'><i class='fa fa-trash-o'></i></a></td>
                           </tr>
                           <?php 
+                            $srno++;
+
                            }
                         }
                           ?>

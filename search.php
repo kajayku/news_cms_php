@@ -1,17 +1,19 @@
-<?php include 'header.php'; ?>
+<?php include 'header.php'; 
+ include 'config.php';
+ $search = mysqli_real_escape_string($conn,$_GET['search']);
+?>
     <div id="main-content">
       <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <!-- post-container -->
                 <div class="post-container">
-                  <h2 class="page-heading">Search : Search Term</h2>
+                  <h2 class="page-heading">Search : <?php echo $search  ?></h2>
                   <?php 
 
                   if(isset($_GET['submit'])){
                     $search = mysqli_real_escape_string($conn,$_GET['search']);
                   }
-                    include 'config.php';
 
                     if(isset($_GET['page'])){
                         $page = $_GET['page'];
