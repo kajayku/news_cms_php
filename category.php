@@ -1,13 +1,22 @@
-<?php include 'header.php'; ?>
+<?php include 'header.php'; 
+ include 'config.php';
+ $cat_id = $_GET['category_id'];
+ $sql2 = "SELECT category_name FROM category WHERE category_id = {$cat_id}";
+ $result2 = mysqli_query($conn,$sql2) or die("Query Failed");
+ if(mysqli_num_rows($result2)>0){
+    $row = mysqli_fetch_assoc($result2);
+    $category_name = $row['category_name'];
+  
+ }
+?>
     <div id="main-content">
       <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <!-- post-container -->
                 <div class="post-container">
-                  <h2 class="page-heading">Category Name</h2>
+                  <h2 class="page-heading">Category : <?php echo $category_name ?></h2>
                   <?php 
-                        include 'config.php';
                         if(isset($_GET['category_id'])){
                             $categoty_id = mysqli_real_escape_string($conn,$_GET['category_id']);
                         }

@@ -30,17 +30,19 @@
                         $sql = "SELECT * FROM category ORDER BY category_id DESC LIMIT {$offset},{$limit}";
                         $result = mysqli_query($conn,$sql) or die("Query Failed");
                         if(mysqli_num_rows($result)>0){
+                            $srno = 1;
                             while($row = mysqli_fetch_assoc($result)){
                         
                         ?>
                         <tr>
-                            <td class='id'><?php echo $row['category_id'] ?></td>
+                            <td class='id'><?php echo ($srno+$offset) ?></td>
                             <td><?php echo $row['category_name'] ?></td>
                             <td><?php echo $row['post'] ?></td>
                             <td class='edit'><a href='update-category.php?category_id=<?php echo base64_encode($row['category_id'])  ?>'><i class='fa fa-edit'></i></a></td>
                             <td class='delete'><a href='delete-category.php?category_id=<?php echo base64_encode($row['category_id']) ?>'><i class='fa fa-trash-o'></i></a></td>
                         </tr>
                        <?php 
+                       $srno++;
                            }
                         }
                        ?> 

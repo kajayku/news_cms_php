@@ -31,6 +31,7 @@ session_start();
         }
 
         if(empty($errors) == true){
+            $file_name = time(). "_" . $file_name;
             move_uploaded_file($file_temp,"upload/".$file_name);
         }else{
             print_r($errors);

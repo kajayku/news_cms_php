@@ -24,6 +24,7 @@
         <form action="update-post-save.php" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
                 <input type="hidden" name="post_id"  class="form-control" value="<?php echo $row['post_id'] ?>" placeholder="">
+                <input type="hidden" name="old_cat_id"  class="form-control" value="<?php echo $row['category'] ?>" placeholder="">
             </div>
             <div class="form-group">
                 <label for="exampleInputTile">Title</label>

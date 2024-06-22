@@ -33,10 +33,11 @@ $result = mysqli_query($conn,$sql) or die("Query Failed");
                       <tbody>
                         <?php 
                       if(mysqli_num_rows($result)>0){
+                        $srno = 1;
                         while($row = mysqli_fetch_assoc($result)){
                     ?>
                           <tr>
-                              <td class='id'><?php echo $row['user_id'] ?></td>
+                              <td class='id'><?php echo ($srno+$offset) ?></td>
                               <td><?php echo $row['first_name']." ".$row['last_name'] ?></td>
                               <td><?php echo $row['username'] ?></td>
                               <td><?php echo $row['role'] ? "Admin":"Normal User" ?></td>
@@ -45,6 +46,7 @@ $result = mysqli_query($conn,$sql) or die("Query Failed");
                           </tr>
                           
                        <?php 
+                       $srno++;
                         }
                     }else{
                         echo "No record found";

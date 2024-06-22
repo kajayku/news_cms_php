@@ -1,3 +1,40 @@
+<?php 
+include 'config.php';
+$page = basename($_SERVER['PHP_SELF']);
+
+switch($page){
+    case "single.php" :
+        echo "single";
+        if(isset($_GET['post_id'])){
+            $sql_title = "SELECT * FROM post WHERE post_id = {$_GET['post_id']}";
+            $result_title = mysqli_query($conn,$sql_title) or die("Query Failed Title");
+            if(mysqli_num_rows($result_title)>0){
+                $row = mysqli_fetch_assoc($result_title);
+                $page_title = $row['title'];
+            }
+        }
+        break;
+    case "category.php" :
+        if(isset($_GET['category_id'])){
+            $sql_title = "SELECT * FROM category WHERE category_id = {$_GET['category_id']}";
+            $result_title = mysqli_query($conn,$sql_title) or die("Query Failed Title");
+            if(mysqli_num_rows($result_title)>0){
+                $row = mysqli_fetch_assoc($result_title);
+                $page_title = $row['category_name'];
+            }
+        }
+        break;
+    case "search.php" :
+        if(isset($_GET['search'])){
+                $page_title = $_GET['search'];
+        }
+        break;
+    default :
+    $page_title = "News Website";
+    break;            
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +42,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>News</title>
+    <title><?php echo $page_title ?></title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <!-- Font Awesome Icon -->
@@ -37,8 +74,11 @@
                 
                 <ul class='menu'>
                 <?php 
-                include 'config.php';
-                $cid = $_GET['category_id'];
+                if(isset($_GET['category_id'])){
+                    $cid = $_GET['category_id'];
+                }else{
+                    $cid = '';
+                }
                 $sql = "SELECT * FROM category WHERE post > 0";
                 $result = mysqli_query($conn,$sql) or die("Query Failed");
                 echo  "<li><a href='index.php'>Home</a></li>";

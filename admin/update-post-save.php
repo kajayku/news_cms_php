@@ -28,6 +28,7 @@ if(isset($_POST['submit'])){
         }
 
         if(empty($errors) === true){
+            $file_name = time(). "_".$file_name;
            move_uploaded_file($file_temp,"upload/".$file_name);
         }else{
             print_r($errors);
@@ -40,10 +41,16 @@ if(isset($_POST['submit'])){
     $category = mysqli_real_escape_string($conn,$_POST['category']);
     //$date = date("d M, Y");
     $author = $_SESSION['user_id'];
+    $category_old = mysqli_real_escape_string($conn,$_POST['old_cat_id']);
+    
 
-    $sql = "UPDATE post SET title= '{$post_title}', description = '{$postdesc}', category = '{$category}' , author = '{$author}' WHERE post_id = {$post_id} ";
+    $sql = "UPDATE post SET title= '{$post_title}', description = '{$postdesc}', category = '{$category}',post_img = '{$file_name}' , author = '{$author}' WHERE post_id = {$post_id};";
 
-    $result = mysqli_query($conn,$sql) or die("Query Failed");
+    if($category != $category_old){
+        $sql .= "UPDATE category SET post = (post - 1) WHERE category_id = {$category_old};";
+        $sql .= "UPDATE category SET post = (post + 1) WHERE category_id = {$category}";
+    }
+    $result = mysqli_multi_query($conn,$sql) or die("Query Failed");
     if($result){
         header("Location: ./post.php");
     }else{
